@@ -1,6 +1,7 @@
 'use strict'
 
 const withTimeoutOption = require('ipfs-core-utils/src/with-timeout-option')
+const toCidAndPath = require('ipfs-core-utils/src/to-cid-and-path')
 const first = require('it-first')
 const last = require('it-last')
 
@@ -14,6 +15,16 @@ module.exports = ({ ipld, preload }) => {
    * @type {import('ipfs-core-types/src/dag').API["get"]}
    */
   const get = async function get (cid, options = {}) {
+    
+    const {
+      cid,
+      path
+    } = toCidAndPath(ipfsPath)
+
+    if (path) {
+      options.path = path
+    }
+    
     if (options.preload !== false) {
       preload(cid)
     }
@@ -28,7 +39,8 @@ module.exports = ({ ipld, preload }) => {
     }
 
     return {
-      value: await ipld.get(cid, options),
+      value: await ipld.get(cid, options),const toCidAndPath = require('ipfs-core-utils/src/to-cid-and-path')
+
       remainderPath: ''
     }
   }
